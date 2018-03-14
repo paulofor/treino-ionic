@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Dish } from '../../shared/dish';
 import { DishProvider } from '../../providers/dish/dish';
 import { DishdetailPage } from '../dishdetail/dishdetail';
-
+import { FavoritoProvider } from '../../providers/favorito/favorito';
 
 /**
  * Generated class for the MenuPage page.
@@ -24,7 +24,8 @@ export class MenuPage {
   mensagemErro: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private dishSrv: DishProvider,@Inject('BaseURL') private BaseURL) {
+              private dishSrv: DishProvider,@Inject('BaseURL') private BaseURL,
+              private favoritoSrv: FavoritoProvider) {
   }
 
 
@@ -44,5 +45,8 @@ export class MenuPage {
       dish: prato, 
     })
   }
-
+  adicionaFavorito(prato:Dish) {
+    console.log('Adding to Favorites', prato.id);
+    this.favoritoSrv.addFavorito(prato.id);
+  }
 }

@@ -18,7 +18,9 @@
 
 <ion-content class="card-brackground-image">
   <div *ngIf="pratos">
-    <ion-card *ngFor="let prato of pratos" (click)="pratoSelecionado($event,prato)">
+    <ion-card *ngFor="let prato of pratos" 
+      (click)="pratoSelecionado($event,prato)"
+      (pan)="adicionaFavorito(prato)">
       <img src="{{BaseURL + prato.imagem }}" />
       <div class="card-title">{{ prato.nome }}</div>
       <div class="card-subtitle">{{ prato.descricao }}</div>
