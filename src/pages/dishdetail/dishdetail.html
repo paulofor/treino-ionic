@@ -8,8 +8,13 @@
 
   <ion-navbar color="primary">
     <ion-title>dishdetail</ion-title>
-  </ion-navbar>
 
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onMore()" >
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 
@@ -54,11 +59,11 @@
     <ion-list-header>
       Comentários
     </ion-list-header>
-    <ion-item *ngFor="let comentario of prato.comentarios" text-wrap> 
-      <h4>{{  comentario.comment }}</h4>
+    <ion-item *ngFor="let comentario of prato.comentarios" text-wrap>
+      <h4>{{ comentario.comment }}</h4>
       <p>{{ comentario.rating }} estrelas</p>
       <p>
-        <span>-- {{comentario.author  }} {{ comentario.date || date }}</span>
+        <span>-- {{comentario.author }} {{ comentario.date || date }}</span>
       </p>
     </ion-item>
   </ion-list>
