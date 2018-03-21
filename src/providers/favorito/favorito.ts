@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 import { baseURL } from '../../shared/baseurl';
 import { DishProvider } from '../dish/dish';
+import { Storage } from '@ionic/storage';
 /*
   Generated class for the FavoritoProvider provider.
 
@@ -17,22 +18,30 @@ export class FavoritoProvider {
 
   favoritos:Array<any>;
 
-  constructor(public http:Http, private dishSrv:DishProvider) {
+  constructor(public http:Http, private dishSrv:DishProvider, private storage: Storage) {
     console.log('Hello FavoritoProvider Provider');
     this.favoritos = [];
+    this.storage.set("favoritos",this.favoritos);
   }
 
   addFavorito(id : number): boolean {
     if (!this.isFavorito(id))
       this.favoritos.push(id);
+    this.storage.set("favoritos",this.favoritos);
     return true;
   }
 
   isFavorito(id: number) : boolean {
+    this.storage.get('favoritos').then((val) => {
+      this.favoritos =  val;
+    });
     return this.favoritos.some(el => el === id);
   }
 
   getFavoritos() : Observable<Dish[]> {
+    this.storage.get('favoritos').then((val) => {
+      this.favoritos =  val;
+    });
     return this.dishSrv.getPratos()
       .map(pratos => pratos.filter(prato => this.favoritos.some(el => el === prato.id)));
   }
@@ -40,6 +49,7 @@ export class FavoritoProvider {
     let index = this.favoritos.indexOf(id);
     if (index >= 0) {
       this.favoritos.splice(index,1);
+      this.storage.set("favoritos",this.favoritos);
       return this.getFavoritos();
     } else {
       console.log('Deletando item inexistente', id);

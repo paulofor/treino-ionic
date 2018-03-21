@@ -10,7 +10,7 @@
     <ion-title>dishdetail</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="onMore()" >
+      <button ion-button icon-only (click)="onMore()">
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -19,64 +19,76 @@
 
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col col-12 col-lg-6>
 
-  <ion-card *ngIf="prato">
-    <img src="{{BaseURL + prato.imagem}}" />
-    <ion-card-content>
-      <ion-card-title>
-        {{ prato.nome || uppercase }}
-      </ion-card-title>
-      <p>
-        {{ prato.descricao }}
-      </p>
-    </ion-card-content>
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="star"></ion-icon>
-          <div>{{ mediaEstrela }} estrelas</div>
-        </button>
+        <ion-card *ngIf="prato">
+          <img src="{{BaseURL + prato.imagem}}" />
+          <ion-card-content>
+            <ion-card-title>
+              {{ prato.nome || uppercase }}
+            </ion-card-title>
+            <p>
+              {{ prato.descricao }}
+            </p>
+          </ion-card-content>
+          <ion-row>
+            <ion-col>
+              <button ion-button icon-left clear small>
+                <ion-icon name="star"></ion-icon>
+                <div>{{ mediaEstrela }} estrelas</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-left clear small>
+                <ion-icon name="text"></ion-icon>
+                <div>{{ numeroComentario }} comentários</div>
+              </button>
+            </ion-col>
+          </ion-row>
+
+        </ion-card>
+
+
+
+        <div [hidden]="prato || mensagemErro">
+          <ion-spinner></ion-spinner>
+          <h4>carregando...</h4>
+        </div>
+        <div *ngIf="mensagemErro">
+          <h2>Erro</h2>
+          <h4>{{ mensagemErro }}</h4>
+        </div>
+
       </ion-col>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="text"></ion-icon>
-          <div>{{ numeroComentario }} comentários</div>
-        </button>
+
+
+      <ion-col col-12 col-lg-6>
+        <ion-list *ngIf="prato">
+          <ion-list-header>
+            Comentários
+          </ion-list-header>
+          <ion-item *ngFor="let comentario of prato.comentarios" text-wrap>
+            <h4>{{ comentario.comment }}</h4>
+            <p>{{ comentario.rating }} estrelas</p>
+            <p>
+              <span>-- {{comentario.author }} {{ comentario.date || date }}</span>
+            </p>
+          </ion-item>
+        </ion-list>
+
+        <ion-fab bottom right [hidden]="favorito">
+          <button ion-fab (click)="adicionaFavorito()">
+            <ion-icon name="heart-outline"></ion-icon>
+          </button>
+        </ion-fab>
+        <ion-fab bottom right *ngIf="favorito">
+          <button ion-fab (click)="adicionaFavorito()">
+            <ion-icon name="heart"></ion-icon>
+          </button>
+        </ion-fab>
       </ion-col>
     </ion-row>
-
-  </ion-card>
-  <div [hidden]="prato || mensagemErro">
-    <ion-spinner></ion-spinner>
-    <h4>carregando...</h4>
-  </div>
-  <div *ngIf="mensagemErro">
-    <h2>Erro</h2>
-    <h4>{{ mensagemErro }}</h4>
-  </div>
-
-  <ion-list *ngIf="prato">
-    <ion-list-header>
-      Comentários
-    </ion-list-header>
-    <ion-item *ngFor="let comentario of prato.comentarios" text-wrap>
-      <h4>{{ comentario.comment }}</h4>
-      <p>{{ comentario.rating }} estrelas</p>
-      <p>
-        <span>-- {{comentario.author }} {{ comentario.date || date }}</span>
-      </p>
-    </ion-item>
-  </ion-list>
-
-  <ion-fab bottom right [hidden]="favorito">
-    <button ion-fab (click)="adicionaFavorito()">
-      <ion-icon name="heart-outline"></ion-icon>
-    </button>
-  </ion-fab>
-  <ion-fab bottom right *ngIf="favorito">
-    <button ion-fab (click)="adicionaFavorito()">
-      <ion-icon name="heart"></ion-icon>
-    </button>
-  </ion-fab>
-
+  </ion-grid>
 </ion-content>
