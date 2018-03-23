@@ -6,6 +6,8 @@ import { Dish } from '../../shared/dish';
 import { Comentario } from '../../shared/comentario';
 import { FavoritoProvider } from '../../providers/favorito/favorito';
 import { ComentarioPage } from '../../pages/comentario/comentario';
+
+import { SocialSharing } from '@ionic-native/social-sharing';
 /** 
  * Generated class for the DishdetailPage page.
  *
@@ -30,7 +32,8 @@ export class DishdetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     @Inject('BaseURL') private BaseURL, private favoritoSrv:FavoritoProvider,
     private toastCtrl: ToastController, private loadingCtrl:LoadingController,
-    private actionSheetCtrl: ActionSheetController, private modalCtrl:ModalController) {
+    private actionSheetCtrl: ActionSheetController, private modalCtrl:ModalController,
+    private socialSharing:SocialSharing) {
       
       this.prato = navParams.get('dish');
 
@@ -69,6 +72,26 @@ export class DishdetailPage {
             console.log('Archive clicked');
             this.abreComentario();
           }
+        },{
+          text: 'Compartilhar Facebook',
+          handler: () => {
+            console.log('Compartilhar Facebook');
+            this.socialSharing.shareViaFacebook(
+              this.prato.nome + ' -- ' + this.prato.descricao,
+              this.BaseURL + this.prato.imagem, '')
+              .then( () => console.log('Post com sucesso facebook'))
+              .catch( () => console.log('Post com erro facebook'));
+            }
+        },{
+          text: 'Compartilhar Twitter',
+          handler: () => {
+            console.log('Compartilhar Twitter');
+            this.socialSharing.shareViaTwitter(
+              this.prato.nome + ' -- ' + this.prato.descricao,
+              this.BaseURL + this.prato.imagem, '')
+              .then( () => console.log('Post com sucesso twitter'))
+              .catch( () => console.log('Post com erro twitter'));
+            }
         },{
           text: 'Cancelar',
           role: 'cancel',
