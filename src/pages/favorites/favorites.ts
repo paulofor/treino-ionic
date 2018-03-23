@@ -6,7 +6,7 @@ import {
 
 import { FavoritoProvider } from '../../providers/favorito/favorito';
 import { Dish } from '../../shared/dish';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+
 /**
  * Generated class for the FavoritesPage page.
  *
@@ -72,7 +72,7 @@ export class FavoritesPage implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private favoritoSrv: FavoritoProvider, @Inject('BaseURL') private BaseURL,
     private toastCtrl: ToastController, private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController, private notificador: LocalNotifications) {
+    private alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {

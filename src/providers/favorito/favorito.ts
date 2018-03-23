@@ -7,6 +7,7 @@ import { Http, Response } from '@angular/http';
 import { baseURL } from '../../shared/baseurl';
 import { DishProvider } from '../dish/dish';
 import { Storage } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 /*
   Generated class for the FavoritoProvider provider.
 
@@ -18,7 +19,8 @@ export class FavoritoProvider {
 
   favoritos:Array<any>;
 
-  constructor(public http:Http, private dishSrv:DishProvider, private storage: Storage) {
+  constructor(public http:Http, private dishSrv:DishProvider, 
+        private storage: Storage, private localNotifications: LocalNotifications) {
     console.log('Hello FavoritoProvider Provider');
     this.favoritos = [];
     this.storage.set("favoritos",this.favoritos);
@@ -28,6 +30,10 @@ export class FavoritoProvider {
     if (!this.isFavorito(id))
       this.favoritos.push(id);
     this.storage.set("favoritos",this.favoritos);
+    this.localNotifications.schedule({
+      id: id,
+      text: 'Prato ' + id + 'adicionado a favoritos'
+    })
     return true;
   }
 

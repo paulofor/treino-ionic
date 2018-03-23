@@ -68,7 +68,8 @@ import { FavoritoProvider } from '../providers/favorito/favorito';
     PromocaoProvider,
     ProcessHttpmsgProvider,
     {provide: 'BaseURL', useValue: baseURL},
-    FavoritoProvider
+    FavoritoProvider,
+    LocalNotifications
   ]
 })
 export class AppModule {}
