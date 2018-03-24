@@ -1,8 +1,9 @@
   
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ModalController } from 'ionic-angular';
+import { Nav, Platform, ModalController, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Network } from '@ionic-native/network';
 
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
@@ -19,12 +20,14 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = HomePage;
+  loading: any = null;
 
   pages: Array<{title: string, icon:string , component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, 
               public splashScreen: SplashScreen,
-              public modalCtrl:ModalController) {
+              public modalCtrl:ModalController, private netowrk:Network, 
+              private loadingCtrl: LoadingController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -45,7 +48,30 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    });
+      this.netowrk.onDisconnect()
+        .subscribe( () => {
+          if (!this.loading) {
+            this.loading = this.loadingCtrl.create({
+              content: 'Sem conexão'
+            });
+            this.loading.present();
+          }
+        }
+        );
+     
+      this.netowrk.onConnect()
+        .subscribe( () => {
+          setTimeout(() => {
+            if (this.netowrk.type == 'wifi')
+              console.log('Rede WiFi');
+          }, 3000);
+          if (this.loading) {
+            this.loading.dismiss();
+            this.loading = null;
+          }
+        });
+    
+      });
   }
 
   openPage(page) {
